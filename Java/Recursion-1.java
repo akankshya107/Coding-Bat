@@ -206,8 +206,10 @@ public int countHi2(String str)
 		return countHi2(str.substring(1));
 	}
 	if(str.substring(0, 2).equals("hi")) return 1 + countHi2(str.substring(2));
+	if(str.substring(1, 3).equals("hi")) return 1 + countHi2(str.substring(3));
 	return countHi2(str.substring(2));
 }
+
 // Given a string that contains a single pair of parenthesis, compute recursively a new string made of only of the parenthesis and their contents, so "xyz(abc)123" yields "(abc)".
 public String parenBit(String str) {
   if (str=="") return str;
@@ -217,4 +219,35 @@ public String parenBit(String str) {
   }
   if (str.charAt(str.length()-1)!=')') return parenBit(str.substring(0, str.length()-1));
   return str;
+}
+
+// Given a string, return true if it is a nesting of zero or more pairs of parenthesis, like "(())" or "((()))". Suggestion: check the first and last chars, and then recur on what's inside them.
+public boolean nestParen(String str) {
+  if (str.length()<1) return true;
+  if (str.length()==1) return (str.charAt(0)=='(') ? false : true;
+  if (str.charAt(0)=='(') return (str.charAt(str.length()-1)==')' && nestParen(str.substring(1, str.length()-1)));
+  return false;
+}
+
+// Given a string and a non-empty substring sub, compute recursively the number of times that sub appears in the string, without the sub strings overlapping.
+public int strCount(String str, String sub) {
+  if (str.length()<sub.length()) return 0;
+  if ((str.substring(0, sub.length())).equals(sub)) return 1 + strCount(str.substring(sub.length()), sub);
+  return strCount(str.substring(1), sub);
+}
+
+// Given a string and a non-empty substring sub, compute recursively if at least n copies of sub appear in the string somewhere, possibly with overlapping. N will be non-negative.
+public boolean strCopies(String str, String sub, int n) {
+  if (n==0) return true;
+  if (str.length()<sub.length()) return (n==0);
+  if ((str.substring(0, sub.length())).equals(sub)) return (strCopies(str.substring(1), sub, n-1));
+  return strCopies(str.substring(1), sub, n);
+}
+
+// Given a string and a non-empty substring sub, compute recursively the largest substring which starts and ends with sub and return its length.
+public int strDist(String str, String sub) {
+  if (str.length()<sub.length()) return 0;
+  if (!((str.substring(0,sub.length())).equals(sub))) return strDist(str.substring(1), sub);
+  if (!(str.substring(str.length()-sub.length() , str.length())).equals(sub)) return strDist(str.substring(0, str.length()-1), sub);
+  return str.length();
 }
